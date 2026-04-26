@@ -86,6 +86,13 @@ async function cargarProductos() {
 }
 
 async function eliminar(id) {
+    // Verificar si el usuario está logueado
+    if (localStorage.getItem("auth") !== "true") {
+        alert("Debes estar logueado para eliminar productos");
+        window.location.href = "logout.html";
+        return;
+    }
+
     if (!confirm("¿Seguro que deseas eliminar este producto?")) return;
 
     await fetch(`${API_URL}/${id}`, {
