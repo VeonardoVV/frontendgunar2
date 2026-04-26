@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Inventario</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h1>Sistema de Inventario de Productos</h1>
+
+        <div class="top-buttons">
+            <a href="1.html"><button class="btn">+ Agregar Producto</button></a>
+            <a href="2.html"><button class="btn">Reporte por Fecha</button></a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Categoría</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabla-productos"></tbody>
+        </table>
+
+    </div>
+</div>
+
+<script>
+const API_URL = "https://backendgunar-1.onrender.com/productos";
+
+async function cargarProductos() {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    const tabla = document.getElementById("tabla-productos");
+    tabla.innerHTML = "";
+
+    data.forEach(p => {
+
+        const categoria = p.categoria || "Sin categoría";
+
+        let colorClase = "";
+
+        if (p.stock <= 10) {
+            colorClase = "rojo";
+        } else if (p.stock <= 50) {
+            colorClase = "amarillo";
+        } else {
+            colorClase = "verde";
+        }
+
+        tabla.innerHTML += `
+            <tr>
+                <td>${p.id}</td>
+                <td>${p.nombre}</td>
+                <td>S/. ${p.precio}</td>
+                <td class="${colorClase}">${p.stock}</td>
+                <td>${categoria}</td>
+                <td>${p.fecha}</td>
+                <td>
+                    <a href="3.html?id=${p.id}">
+                        <button class="btn small">Editar</button>
+                    </a>
+
+                    <button class="btn small" onclick="eliminar(${p.id})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+async function eliminar(id) {
+    if (!confirm("¿Seguro que deseas eliminar este producto?")) return;
+
+    await fetch(`${API_URL}/${id}`, {
+        method: "DELETE"
+    });
+
+    cargarProductos();
+}
+
+cargarProductos();
+</script>
+
+</body>
+</html>

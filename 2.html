@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte de Productos</title>
+  <link rel="stylesheet" href="2.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <h1>Reporte de Productos</h1>
+
+    <!-- FILTROS EN UNA SOLA FILA -->
+    <form id="form-reporte" class="filters-row">
+
+      <div>
+        <label>Desde</label>
+        <input type="date" id="desde">
+      </div>
+
+      <div>
+        <label>Hasta</label>
+        <input type="date" id="hasta">
+      </div>
+
+      <button type="submit" class="btn primary">Buscar</button>
+
+      <a href="index.html">
+        <button type="button" class="btn secondary">Volver</button>
+      </a>
+
+    </form>
+
+    <!-- EXPORTAR -->
+    <button class="btn export" type="button" onclick="exportarCSV()">
+      Exportar CSV
+    </button>
+
+    <!-- TABLA -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Categoría</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+
+      <tbody id="resultado"></tbody>
+    </table>
+
+  </div>
+</div>
+
+<script>
+const API_URL = "https://backendgunar-1.onrender.com/productos";
+
+let productosGlobal = [];
+
+/* cargar */
+async function cargarProductos() {
+  const res = await fetch(API_URL);
+  productosGlobal = await res.json();
+  render(productosGlobal);
+}
+
+/* render */
+function render(data) {
+  const tabla = document.getElementById("resultado");
+  tabla.innerHTML = "";
+
+  data.forEach(p => {
+    const categoria = p.categorias?.nombre || "Sin categoría";
+
+    tabla.innerHTML += `
+      <tr>
+        <td>${p.id}</td>
+        <td>${p.nombre}</td>
+        <td>S/. ${Number(p.precio).toFixed(2)}</td>
+        <td>${p.stock}</td>
+        <td>${categoria}</td>
+        <td>${p.fecha}</td>
+      </tr>
+    `;
+  });
+}
+
+/* filtro */
+document.getElementById("form-reporte").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const desde = document.getElementById("desde").value;
+  const hasta = document.getElementById("hasta").value;
+
+  const filtrados = productosGlobal.filter(p => {
+    return (!desde || p.fecha >= desde) &&
+           (!hasta || p.fecha <= hasta);
+  });
+
+  render(filtrados);
+});
+
+/* export CSV */
+function exportarCSV() {
+  const filas = document.querySelectorAll("table tr");
+  let csv = [];
+
+  filas.forEach(fila => {
+    let cols = fila.querySelectorAll("td, th");
+    let data = [];
+
+    cols.forEach(col => data.push(col.innerText));
+    csv.push(data.join(","));
+  });
+
+  const blob = new Blob(["\uFEFF" + csv.join("\n")], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const link = document.createElement("a");
+  link.download = "reporte.csv";
+  link.href = URL.createObjectURL(blob);
+  link.click();
+}
+
+/* init */
+cargarProductos();
+</script>
+
+</body>
+</html>

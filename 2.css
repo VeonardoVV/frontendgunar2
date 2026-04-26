@@ -1,0 +1,110 @@
+/* Fondo general */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e6e6e6;
+}
+
+/* Contenedor centrado */
+.container {
+  display: flex;
+margin-top: -150px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Tarjeta */
+.card {
+  background: #f4f4f4;
+  padding: 30px 40px;
+  border-radius: 10px;
+  width: 700px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Título */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Filtros */
+.filters {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.filters div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Inputs */
+input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Botones */
+.btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.primary {
+  background-color: #5b8bd9;
+  color: white;
+}
+
+.secondary {
+  background-color: #6c8ebf;
+  color: white;
+}
+
+.export {
+  background-color: #5b8bd9;
+  color: white;
+  margin: 15px 0;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead {
+  background-color: #5b8bd9;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.filters, .filters-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  margin-bottom: 15px;
+}
