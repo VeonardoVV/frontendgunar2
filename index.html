@@ -1,8 +1,4 @@
-<script>
-    if (localStorage.getItem("auth") !== "true") {
-    window.location.href = "logout.html";
-}
-</script>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +7,9 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-
+<script>
+    verificarAuth();
+</script>
 <div class="container">
     <div class="card">
         <h1>Sistema de Inventario de Productos</h1>
